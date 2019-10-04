@@ -6,10 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
+// ReSharper disable once CheckNamespace
 public class StaTheoryTests
 {
-    public static object[][] MemberDataSource => new object[][]
-    {
+    public static object[][] MemberDataSource => new[]
+        {
         new object[] { 1, 2 },
         new object[] { 3, 4 },
     };

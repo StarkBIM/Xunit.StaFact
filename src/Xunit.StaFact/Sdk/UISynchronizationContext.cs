@@ -5,7 +5,6 @@ namespace Xunit.Sdk
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Runtime.ExceptionServices;
     using System.Threading;
     using System.Threading.Tasks;
@@ -19,13 +18,6 @@ namespace Xunit.Sdk
         private readonly int mainThread = Environment.CurrentManagedThreadId;
         private int activeOperations;
         private bool pumping;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UISynchronizationContext"/> class.
-        /// </summary>
-        public UISynchronizationContext()
-        {
-        }
 
         private bool AnyMessagesInQueue
         {
@@ -195,7 +187,7 @@ namespace Xunit.Sdk
 
         private bool TryOneWorkItem()
         {
-            KeyValuePair<SendOrPostCallback, object> work = default(KeyValuePair<SendOrPostCallback, object>);
+            KeyValuePair<SendOrPostCallback, object> work;
             lock (this.messageQueue)
             {
                 if (this.messageQueue.Count == 0)

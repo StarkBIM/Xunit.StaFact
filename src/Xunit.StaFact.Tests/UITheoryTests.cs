@@ -8,6 +8,7 @@ using Xunit;
 
 #pragma warning disable xUnit1008
 
+// ReSharper disable once CheckNamespace
 public class UITheoryTests : IDisposable, IAsyncLifetime
 {
     private readonly SynchronizationContext ctorSyncContext;

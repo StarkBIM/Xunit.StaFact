@@ -3,16 +3,12 @@
 
 namespace Xunit.Sdk
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Xunit.Sdk;
 
     public class UITestCaseRunner : XunitTestCaseRunner
     {
-        private SyncContextAdapter syncContextAdapter;
+        private readonly SyncContextAdapter syncContextAdapter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UITestCaseRunner"/> class.

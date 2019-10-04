@@ -6,14 +6,13 @@ namespace Xunit.Sdk
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
     using Abstractions;
 
     public class UITestInvoker : XunitTestInvoker
     {
-        private SyncContextAdapter adapter;
+        private readonly SyncContextAdapter adapter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UITestInvoker"/> class.

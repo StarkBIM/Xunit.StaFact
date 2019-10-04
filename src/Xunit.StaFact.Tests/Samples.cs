@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
+// ReSharper disable once CheckNamespace
 public class Samples
 {
     /// <summary>

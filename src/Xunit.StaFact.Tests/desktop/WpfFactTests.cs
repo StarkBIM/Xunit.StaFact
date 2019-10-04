@@ -2,13 +2,10 @@
 // Licensed under the Ms-PL license. See LICENSE.txt file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
+
 using Xunit;
 using DesktopFactAttribute = Xunit.WpfFactAttribute;
 using DesktopSyncContext = System.Windows.Threading.DispatcherSynchronizationContext;
@@ -20,9 +17,11 @@ using DesktopSyncContext = System.Windows.Threading.DispatcherSynchronizationCon
 /// The members of this class should be kept in exact sync with those of the
 /// <see cref="WinFormsFactTests"/> since they should behave the same way.
 /// </remarks>
+// ReSharper disable once CheckNamespace
 public class WpfFactTests
 {
     private readonly Thread ctorThread;
+    // ReSharper disable once NotAccessedField.Local
     private readonly SynchronizationContext ctorSyncContext;
 
     public WpfFactTests()

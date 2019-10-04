@@ -9,10 +9,11 @@ using Xunit;
 
 #pragma warning disable xUnit1008
 
+// ReSharper disable once CheckNamespace
 public class WpfTheoryTests
 {
-    public static object[][] MemberDataSource => new object[][]
-    {
+    public static object[][] MemberDataSource => new[]
+        {
         new object[] { 1, 2 },
         new object[] { 3, 4 },
     };
