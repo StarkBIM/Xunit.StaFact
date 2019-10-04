@@ -26,7 +26,7 @@ namespace Xunit.Sdk
 
         public new Task<decimal> RunAsync()
         {
-            return this.RunOnStaIfPossibleOtherwiseUseMta(() =>
+            return RunOnStaIfPossibleOtherwiseUseMta(() =>
             {
                 var uiSyncContext = this.adapter.Create();
                 SynchronizationContext.SetSynchronizationContext(uiSyncContext);
@@ -83,9 +83,9 @@ namespace Xunit.Sdk
             });
         }
 
-        private Task<decimal> RunOnStaIfPossibleOtherwiseUseMta(Func<decimal> action)
+        private static Task<decimal> RunOnStaIfPossibleOtherwiseUseMta(Func<decimal> action)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OSUtil.IsWindows())
             {
                 var tcs = new TaskCompletionSource<decimal>();
                 var sta = new Thread(() =>
@@ -103,10 +103,8 @@ namespace Xunit.Sdk
                 sta.Start();
                 return tcs.Task;
             }
-            else
-            {
-                return Task.Run(action);
-            }
+
+            return Task.Run(action);
         }
 
         private decimal InvokeTestMethod(object testClassInstance)
@@ -116,25 +114,22 @@ namespace Xunit.Sdk
                     () =>
                     {
                         var parameterCount = this.TestMethod.GetParameters().Length;
-                        var valueCount = this.TestMethodArguments == null ? 0 : this.TestMethodArguments.Length;
+                        var valueCount = this.TestMethodArguments?.Length ?? 0;
                         if (parameterCount != valueCount)
                         {
-#pragma warning disable SA1119 // StyleCop bug https://github.com/DotNetAnalyzers/StyleCopAnalyzers/issues/2058
                             this.Aggregator.Add(
                                 new InvalidOperationException(
                                     $"The test method expected {parameterCount} parameter value{(parameterCount == 1 ? string.Empty : "s")}, but {valueCount} parameter value{(valueCount == 1 ? string.Empty : "s")} {(valueCount == 1 ? "was" : "were")} provided."));
-#pragma warning restore SA1119
                         }
                         else
                         {
                             var result = this.CallTestMethod(testClassInstance);
-                            var task = result as Task;
-                            if (task != null)
+                            if (result is Task task)
                             {
                                 this.adapter.PumpTill(task);
                                 if (task.IsFaulted)
                                 {
-                                    this.Aggregator.Add(task.Exception.Flatten().InnerException ?? task.Exception);
+                                    this.Aggregator.Add(task.Exception?.Flatten().InnerException ?? task.Exception);
                                 }
                                 else if (task.IsCanceled)
                                 {

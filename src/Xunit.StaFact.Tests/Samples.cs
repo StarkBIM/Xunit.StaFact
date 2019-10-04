@@ -2,7 +2,6 @@
 // Licensed under the Ms-PL license. See LICENSE.txt file in the project root for full license information.
 
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -19,7 +18,7 @@ public class Samples
     {
         int initialThread = Environment.CurrentManagedThreadId;
         Assert.NotNull(SynchronizationContext.Current);
-        var expectedApartment = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ApartmentState.STA : ApartmentState.Unknown;
+        var expectedApartment = OSUtil.IsWindows() ? ApartmentState.STA : ApartmentState.Unknown;
         Assert.Equal(expectedApartment, Thread.CurrentThread.GetApartmentState());
 
         await Task.Yield();
@@ -33,7 +32,7 @@ public class Samples
     [Fact]
     public async Task Fact_OnMTAThread()
     {
-        var expectedApartment = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ApartmentState.MTA : ApartmentState.Unknown;
+        var expectedApartment = OSUtil.IsWindows() ? ApartmentState.MTA : ApartmentState.Unknown;
         Assert.Equal(expectedApartment, Thread.CurrentThread.GetApartmentState());
         await Task.Yield();
         Assert.Equal(expectedApartment, Thread.CurrentThread.GetApartmentState());
